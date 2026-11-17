@@ -121,6 +121,7 @@ to service_role;
 
 -- ============================================================
 -- Auto-delete inactive notebooks (14 days)
+-- yiting.useai@gmail.com 建立的記帳本永久保留（不分大小寫、忽略頭尾空白）。
 -- Enable pg_cron: Supabase dashboard > Database > Extensions > pg_cron
 -- Then run:
 -- ============================================================
@@ -129,6 +130,7 @@ to service_role;
 --   '0 2 * * *',
 --   $$
 --     delete from yt001_notebooks
---     where last_accessed_at < now() - interval '14 days';
+--     where last_accessed_at < now() - interval '14 days'
+--       and lower(btrim(creator_email)) <> 'yiting.useai@gmail.com';
 --   $$
 -- );

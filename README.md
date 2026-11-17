@@ -52,7 +52,7 @@ GitHub、Supabase、Resend 與部署平台分開管理。Fork 不會轉移金鑰
 3. 目前寄件者為 Resend 測試地址 `onboarding@resend.dev`。正式寄送需驗證自己的寄件網域並調整寄件者。
 4. 部署平台需連接 `yitinguseai/en_travel_table` 的 `main` 分支並設定環境變數；推送是否自動部署由平台設定決定。
 5. 保活工作流程在 `.github/workflows/supabase-keepalive.yml`。在自己的 GitHub 儲存庫 Actions secrets 設定 `SUPABASE_URL` 與 `SUPABASE_ANON_KEY`，並在 fork 啟用工作流程。
-6. 14 天未開啟的記帳本自動刪除需另行啟用 Supabase `pg_cron`；SQL 檔提供設定範例。
+6. 一般記帳本 14 天未開啟自動刪除需另行啟用 Supabase `pg_cron`；`yiting.useai@gmail.com` 建立的記帳本排除在清理之外（信箱比對忽略大小寫與頭尾空白）。SQL 檔提供設定範例。
 
 目前儲存庫未包含實際服務金鑰或部署專案綁定。
 
@@ -79,3 +79,11 @@ GitHub、Supabase、Resend 與部署平台分開管理。Fork 不會轉移金鑰
 ## 圖片上傳限制
 
 `yt001-receipts`、`yt001-proofs`、`yt001-qrcodes` 統一設定為 Public bucket，檔案大小上限 2 MB，允許 MIME types 為 `image/*`。前端提示、選檔檢查與後端 API 共用 `src/lib/upload.ts` 的限制；調整 Storage 限制時需同步更新。
+
+## 擁有者資料保留
+
+`yiting.useai@gmail.com` 建立的記帳本不因 14 天未開啟而自動刪除，包括它的成員、支出、分攤及結算資料。此規則依已儲存的 `creator_email` 判定，並非登入身分驗證。
+
+若曾啟用舊的自動清理排程，請在 Supabase SQL Editor 執行 `supabase/migrations/20261118_yt001_preserve_owner_notebooks.sql`。此檔只更新既有、已知名稱且操作 YT001 記帳本的清理排程，保留原本時間與啟用狀態；不會立即刪除資料或建立新排程。若沒有排程則不做變更。自訂名稱或由其他服務執行的清理作業需要另行檢查。
+
+只更新 GitHub 或 Vercel 不會更新 Supabase 既有排程。空白資料庫使用最新版建表 SQL 中的清理範例即可，不需重新執行建表檔。

@@ -157,7 +157,7 @@ export default function LandingPage() {
         </Card>
 
         <p className="text-center text-xs text-zinc-400 mt-6">
-          超過 14 天未開啟記帳本，資料將自動刪除
+          一般記帳本超過 14 天未開啟將自動刪除；專案擁有者的記帳本不受此限制。
         </p>
       </div>
     </div>
