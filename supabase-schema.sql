@@ -107,6 +107,7 @@ grant select, insert, update, delete on table
 to service_role;
 
 -- Storage buckets (create in Supabase dashboard > Storage)
+-- All three buckets: file size limit 2 MB, allowed MIME types image/*
 -- bucket: yt001-receipts    (public: true)
 -- bucket: yt001-proofs      (public: true)
 -- bucket: yt001-qrcodes     (public: true)

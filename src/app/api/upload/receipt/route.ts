@@ -1,3 +1,4 @@
+import { validateImageUpload } from '@/lib/upload'
 import { BUCKETS } from '@/lib/project'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -11,11 +12,9 @@ export async function POST(request: NextRequest) {
     if (!file || !notebookId) {
       return NextResponse.json({ error: 'file and notebook_id required' }, { status: 400 })
     }
-    if (!file.type.startsWith('image/')) {
-      return NextResponse.json({ error: '僅支援圖片格式' }, { status: 400 })
-    }
-    if (file.size > 1 * 1024 * 1024) {
-      return NextResponse.json({ error: '檔案超過 1 MB 上限' }, { status: 400 })
+    const uploadError = validateImageUpload(file)
+    if (uploadError) {
+      return NextResponse.json({ error: uploadError }, { status: 400 })
     }
 
     const ext = file.name.split('.').pop() ?? 'jpg'

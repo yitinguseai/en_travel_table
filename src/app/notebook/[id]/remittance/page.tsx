@@ -1,5 +1,7 @@
 'use client'
 
+import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_HINT, validateImageUpload } from '@/lib/upload'
+
 import { useEffect, useState, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import type { SettlementItem, CollectionInfo, RemittanceStatus, Currency } from '@/types'
@@ -115,6 +117,12 @@ export default function RemittancePage() {
 
   async function handleProofUpload(item: SettlementItem, file: File) {
     if (unsaved) return
+    const uploadError = validateImageUpload(file)
+    if (uploadError) {
+      setError(uploadError)
+      return
+    }
+    setError('')
     setUpdating(item.id)
     try {
       const form = new FormData()
@@ -394,15 +402,16 @@ function TransferCard({
                 </span>
                 <input
                   type="file"
-                  accept="image/*"
+                  accept={IMAGE_UPLOAD_ACCEPT}
                   className="hidden"
                   onChange={e => {
                     const file = e.target.files?.[0]
                     if (file) onProofUpload(item, file)
+                    e.target.value = ''
                   }}
                 />
               </label>
-              <p className="text-xs text-zinc-400">限圖片格式，1 MB 以內</p>
+              <p className="text-xs text-zinc-400">{IMAGE_UPLOAD_HINT}</p>
             </div>
           )}
 

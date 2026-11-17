@@ -73,3 +73,7 @@ GitHub、Supabase、Resend 與部署平台分開管理。Fork 不會轉移金鑰
 本專案的 Storage buckets 為 `yt001-receipts`、`yt001-proofs`、`yt001-qrcodes`。
 
 `YT001` 是公開專案識別碼，不是密碼或連線憑證。資料表及 Storage 名稱由固定程式設定產生，仍須在 Supabase 建立相同名稱。不要只改環境變數來切換專案代碼。
+
+## 圖片上傳限制
+
+`yt001-receipts`、`yt001-proofs`、`yt001-qrcodes` 統一設定為 Public bucket，檔案大小上限 2 MB，允許 MIME types 為 `image/*`。前端提示、選檔檢查與後端 API 共用 `src/lib/upload.ts` 的限制；調整 Storage 限制時需同步更新。

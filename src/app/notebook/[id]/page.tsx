@@ -1,5 +1,7 @@
 'use client'
 
+import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_HINT, validateImageUpload } from '@/lib/upload'
+
 import { useEffect, useState, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -715,6 +717,12 @@ function CollectionTab({
   function handleQrChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
+    const error = validateImageUpload(file)
+    if (error) {
+      e.target.value = ''
+      setUploadError(error)
+      return
+    }
     setQrFile(file)
     setQrPreview(URL.createObjectURL(file))
     setUploadError('')
@@ -802,12 +810,12 @@ function CollectionTab({
                       <span>{qrPreview ? '更換圖片' : '上傳 QR Code'}</span>
                       <input
                         type="file"
-                        accept="image/*"
+                        accept={IMAGE_UPLOAD_ACCEPT}
                         className="hidden"
                         onChange={handleQrChange}
                       />
                     </label>
-                    <p className="text-xs text-zinc-400">限圖片格式，1 MB 以內</p>
+                    <p className="text-xs text-zinc-400">{IMAGE_UPLOAD_HINT}</p>
                   </div>
                   {uploadError && <p className="text-xs text-red-500">{uploadError}</p>}
                 </div>

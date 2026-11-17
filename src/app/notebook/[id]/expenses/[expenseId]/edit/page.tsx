@@ -1,5 +1,7 @@
 'use client'
 
+import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_HINT, validateImageUpload } from '@/lib/upload'
+
 import { useEffect, useState, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import type { Member, Currency, Expense } from '@/types'
@@ -527,11 +529,22 @@ export default function EditExpensePage() {
               )}
               <input
                 type="file"
-                accept="image/*"
-                onChange={e => setReceipt(e.target.files?.[0] ?? null)}
+                accept={IMAGE_UPLOAD_ACCEPT}
+                onChange={e => {
+                  const file = e.target.files?.[0] ?? null
+                  const uploadError = file ? validateImageUpload(file) : null
+                  if (uploadError) {
+                    setReceipt(null)
+                    e.target.value = ''
+                    setError(uploadError)
+                    return
+                  }
+                  setError('')
+                  setReceipt(file)
+                }}
                 className="block w-full text-sm text-zinc-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-zinc-100 file:text-zinc-700 hover:file:bg-zinc-200"
               />
-              <p className="text-xs text-zinc-400">限圖片格式，1 MB 以內</p>
+              <p className="text-xs text-zinc-400">{IMAGE_UPLOAD_HINT}</p>
             </div>
           </CardContent>
         </Card>
