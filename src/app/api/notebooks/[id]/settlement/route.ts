@@ -1,3 +1,4 @@
+import { TABLES } from '@/lib/project'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { calculateBalances, generateTransferList } from '@/lib/settlement'
@@ -9,8 +10,8 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const { id } = await params
 
     const { data, error } = await supabase
-      .from('en_travel_expenses')
-      .select('*, splits:en_travel_expense_splits(*)')
+      .from(TABLES.expenses)
+      .select(`*, splits:${TABLES.expense_splits}(*)`)
       .eq('notebook_id', id)
       .eq('visibility', 'shared')
 
@@ -50,7 +51,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       proof_url: null,
     }))
 
-    const { data, error } = await supabase.from('en_travel_settlement_items').insert(rows).select()
+    const { data, error } = await supabase.from(TABLES.settlement_items).insert(rows).select()
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 })

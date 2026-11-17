@@ -1,3 +1,4 @@
+import { TABLES } from '@/lib/project'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
@@ -7,7 +8,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const { id } = await params
 
     const { data, error } = await supabase
-      .from('en_travel_collection_info')
+      .from(TABLES.collection_info)
       .select('*')
       .eq('notebook_id', id)
 
@@ -43,7 +44,7 @@ async function upsertCollection(request: NextRequest, notebookId: string) {
     const supabase = createClient()
 
     const { data, error } = await supabase
-      .from('en_travel_collection_info')
+      .from(TABLES.collection_info)
       .upsert(
         {
           notebook_id: notebookId,

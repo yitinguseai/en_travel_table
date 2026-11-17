@@ -1,3 +1,4 @@
+import { TABLES } from '@/lib/project'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
@@ -7,7 +8,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const { id } = await params
 
     const { data, error } = await supabase
-      .from('en_travel_currencies')
+      .from(TABLES.currencies)
       .select('*')
       .eq('notebook_id', id)
 
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     const supabase = createClient()
 
     const { data, error } = await supabase
-      .from('en_travel_currencies')
+      .from(TABLES.currencies)
       .upsert(
         { notebook_id: id, code, exchange_rate: exchange_rate ?? null, base_currency: base_currency ?? null, decimal_places: decimal_places ?? 2 },
         { onConflict: 'notebook_id,code' }

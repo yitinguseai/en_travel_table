@@ -1,3 +1,4 @@
+import { TABLES } from '@/lib/project'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import type { RemittanceStatus } from '@/types'
@@ -22,7 +23,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     }
 
     const { data, error } = await supabase
-      .from('en_travel_settlement_items')
+      .from(TABLES.settlement_items)
       .update(updates)
       .eq('id', id)
       .select()

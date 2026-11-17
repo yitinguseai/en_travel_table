@@ -1,3 +1,4 @@
+import { TABLES } from '@/lib/project'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import bcrypt from 'bcryptjs'
@@ -22,7 +23,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { data, error } = await supabase
-      .from('en_travel_notebooks')
+      .from(TABLES.notebooks)
       .insert({
         title,
         creator_email,

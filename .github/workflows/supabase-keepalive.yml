@@ -1,4 +1,4 @@
-name: Supabase Keep-Alive
+name: YT001 Supabase Keep-Alive
 
 on:
   schedule:
@@ -14,6 +14,6 @@ jobs:
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
             -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
             -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
-            "${{ secrets.SUPABASE_URL }}/rest/v1/en_travel_notebooks?select=id&limit=1")
+            "${{ secrets.SUPABASE_URL }}/rest/v1/yt001_notebooks?select=id&limit=1")
           echo "Response: $STATUS"
           [ "$STATUS" = "200" ] || exit 1

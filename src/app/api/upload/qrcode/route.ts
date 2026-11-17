@@ -1,3 +1,4 @@
+import { BUCKETS } from '@/lib/project'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
@@ -24,14 +25,14 @@ export async function POST(request: NextRequest) {
 
     const supabase = createClient()
     const { data, error } = await supabase.storage
-      .from('tp-qrcodes')
+      .from(BUCKETS.qrcodes)
       .upload(path, file, { upsert: true, contentType: file.type })
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
-    const { data: urlData } = supabase.storage.from('tp-qrcodes').getPublicUrl(data.path)
+    const { data: urlData } = supabase.storage.from(BUCKETS.qrcodes).getPublicUrl(data.path)
 
     return NextResponse.json({ url: urlData.publicUrl })
   } catch {

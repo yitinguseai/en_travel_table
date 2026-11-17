@@ -1,3 +1,4 @@
+import { TABLES } from '@/lib/project'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
@@ -18,7 +19,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     const supabase = createClient()
 
     const { data: notebook, error: fetchError } = await supabase
-      .from('en_travel_notebooks')
+      .from(TABLES.notebooks)
       .select('creator_email')
       .eq('id', id)
       .single()
@@ -32,7 +33,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     }
 
     const { data, error } = await supabase
-      .from('en_travel_notebooks')
+      .from(TABLES.notebooks)
       .update({ is_closed: action === 'close' })
       .eq('id', id)
       .select()

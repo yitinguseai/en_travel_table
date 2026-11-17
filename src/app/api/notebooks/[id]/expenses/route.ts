@@ -1,3 +1,4 @@
+import { TABLES } from '@/lib/project'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
@@ -9,8 +10,8 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const createdBy = searchParams.get('created_by')
 
     let query = supabase
-      .from('en_travel_expenses')
-      .select('*, splits:en_travel_expense_splits(*)')
+      .from(TABLES.expenses)
+      .select(`*, splits:${TABLES.expense_splits}(*)`)
       .eq('notebook_id', id)
       .order('date', { ascending: false })
 

@@ -1,3 +1,4 @@
+import { TABLES } from '@/lib/project'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import type { SplitMethod, Visibility } from '@/types'
@@ -32,7 +33,7 @@ export async function POST(request: NextRequest) {
     const supabase = createClient()
 
     const { data: expense, error: expenseError } = await supabase
-      .from('en_travel_expenses')
+      .from(TABLES.expenses)
       .insert({
         notebook_id,
         title,
@@ -60,7 +61,7 @@ export async function POST(request: NextRequest) {
     }))
 
     const { data: savedSplits, error: splitsError } = await supabase
-      .from('en_travel_expense_splits')
+      .from(TABLES.expense_splits)
       .insert(splitRows)
       .select()
 
