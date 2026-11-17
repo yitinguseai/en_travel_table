@@ -7,9 +7,9 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const { id } = await params
 
     const [notebookRes, membersRes, currenciesRes] = await Promise.all([
-      supabase.from('tp_notebooks').select('*').eq('id', id).single(),
-      supabase.from('tp_members').select('*').eq('notebook_id', id),
-      supabase.from('tp_currencies').select('*').eq('notebook_id', id),
+      supabase.from('en_travel_notebooks').select('*').eq('id', id).single(),
+      supabase.from('en_travel_members').select('*').eq('notebook_id', id),
+      supabase.from('en_travel_currencies').select('*').eq('notebook_id', id),
     ])
 
     if (notebookRes.error) {
@@ -17,7 +17,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     }
 
     // Update last_accessed_at (fire-and-forget, don't block response)
-    supabase.from('tp_notebooks').update({ last_accessed_at: new Date().toISOString() }).eq('id', id).then(() => {})
+    supabase.from('en_travel_notebooks').update({ last_accessed_at: new Date().toISOString() }).eq('id', id).then(() => {})
 
     return NextResponse.json({
       notebook: notebookRes.data,

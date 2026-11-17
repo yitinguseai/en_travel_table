@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     const supabase = createClient()
 
     const { data: expense, error: expenseError } = await supabase
-      .from('tp_expenses')
+      .from('en_travel_expenses')
       .insert({
         notebook_id,
         title,
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     }))
 
     const { data: savedSplits, error: splitsError } = await supabase
-      .from('tp_expense_splits')
+      .from('en_travel_expense_splits')
       .insert(splitRows)
       .select()
 

@@ -14,7 +14,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     const supabase = createClient()
 
     const { data, error } = await supabase
-      .from('tp_members')
+      .from('en_travel_members')
       .upsert({ notebook_id: id, name }, { onConflict: 'notebook_id,name' })
       .select()
       .single()
@@ -43,8 +43,8 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 
     // Check if member has expenses (as payer or split participant)
     const [payerCheck, splitCheck] = await Promise.all([
-      supabase.from('tp_expenses').select('id', { count: 'exact', head: true }).eq('notebook_id', id).eq('payer', name),
-      supabase.from('tp_expense_splits').select('id', { count: 'exact', head: true }).eq('member_name', name),
+      supabase.from('en_travel_expenses').select('id', { count: 'exact', head: true }).eq('notebook_id', id).eq('payer', name),
+      supabase.from('en_travel_expense_splits').select('id', { count: 'exact', head: true }).eq('member_name', name),
     ])
 
     const hasExpenses = (payerCheck.count ?? 0) > 0 || (splitCheck.count ?? 0) > 0
@@ -53,7 +53,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     }
 
     const { error } = await supabase
-      .from('tp_members')
+      .from('en_travel_members')
       .delete()
       .eq('notebook_id', id)
       .eq('name', name)

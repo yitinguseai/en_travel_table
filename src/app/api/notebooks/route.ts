@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { data, error } = await supabase
-      .from('tp_notebooks')
+      .from('en_travel_notebooks')
       .insert({
         title,
         creator_email,

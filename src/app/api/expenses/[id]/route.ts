@@ -7,8 +7,8 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const supabase = createClient()
 
     const { data: expense, error } = await supabase
-      .from('tp_expenses')
-      .select('*, splits:tp_expense_splits(*)')
+      .from('en_travel_expenses')
+      .select('*, splits:en_travel_expense_splits(*)')
       .eq('id', id)
       .single()
 
@@ -31,7 +31,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     const supabase = createClient()
 
     const { error: updateError } = await supabase
-      .from('tp_expenses')
+      .from('en_travel_expenses')
       .update({ title, date, amount, currency, payer, split_method, notes: notes ?? null, visibility, receipt_url: receipt_url ?? null })
       .eq('id', id)
 
@@ -40,7 +40,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     }
 
     // Replace splits: delete old, insert new
-    await supabase.from('tp_expense_splits').delete().eq('expense_id', id)
+    await supabase.from('en_travel_expense_splits').delete().eq('expense_id', id)
 
     if (splits && splits.length > 0) {
       const splitRows = splits.map((s: { member_name: string; amount: number; ratio?: number }) => ({
@@ -49,7 +49,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
         amount: s.amount,
         ratio: s.ratio ?? null,
       }))
-      const { error: splitsError } = await supabase.from('tp_expense_splits').insert(splitRows).select()
+      const { error: splitsError } = await supabase.from('en_travel_expense_splits').insert(splitRows).select()
       if (splitsError) {
         return NextResponse.json({ error: splitsError.message }, { status: 500 })
       }
@@ -66,9 +66,9 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     const { id } = await params
     const supabase = createClient()
 
-    await supabase.from('tp_expense_splits').delete().eq('expense_id', id)
+    await supabase.from('en_travel_expense_splits').delete().eq('expense_id', id)
 
-    const { error } = await supabase.from('tp_expenses').delete().eq('id', id)
+    const { error } = await supabase.from('en_travel_expenses').delete().eq('id', id)
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 })

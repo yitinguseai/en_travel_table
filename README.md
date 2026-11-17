@@ -53,3 +53,21 @@ GitHub、Supabase、Resend 與部署平台分開管理。Fork 不會轉移金鑰
 6. 14 天未開啟的記帳本自動刪除需另行啟用 Supabase `pg_cron`；SQL 檔提供設定範例。
 
 目前儲存庫未包含實際服務金鑰或部署專案綁定。
+
+## 資料表命名
+
+本專案固定使用 `en_travel_` 前綴，代表 `yitinguseai/en_travel_table`，不要與其他專案共用資料表。
+
+| 資料表 | 用途 |
+| --- | --- |
+| `en_travel_notebooks` | 旅行記帳本 |
+| `en_travel_members` | 記帳本成員 |
+| `en_travel_currencies` | 幣別與匯率 |
+| `en_travel_expenses` | 支出紀錄 |
+| `en_travel_expense_splits` | 支出分攤明細 |
+| `en_travel_settlement_items` | 結算與匯款狀態 |
+| `en_travel_collection_info` | 收款帳號與 QR Code |
+
+每張表皆有專案與中文用途註解。最新 `supabase-schema.sql` 已包含幣別小數位、RLS 與後端角色授權，空白資料庫只需執行這一份建表檔。
+若已執行舊版 `tp_` 建表檔，先確認資料是否屬於本專案，再安排更名遷移；不要直接重複建表或刪除舊資料。
+Storage buckets 暫時沿用 `tp-receipts`、`tp-proofs`、`tp-qrcodes`。

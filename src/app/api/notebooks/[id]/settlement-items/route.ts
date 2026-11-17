@@ -6,7 +6,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const { id } = await params
     const supabase = createClient()
     const { data, error } = await supabase
-      .from('tp_settlement_items')
+      .from('en_travel_settlement_items')
       .select('*')
       .eq('notebook_id', id)
       .order('currency')
