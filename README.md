@@ -25,6 +25,8 @@ cp .env.example .env.local
 填入自己的 Supabase 與 Resend 設定，再執行 `npm run dev`，開啟 http://localhost:3000。
 `.env.local` 不會提交到 GitHub。
 
+開發與建置使用 Webpack，避開目前 Turbopack 在中文資料夾路徑編譯 API 時的崩潰問題。
+
 ## 更新到 GitHub
 
 本機已設定提交者為 `yitinguseai <yiting.useai@gmail.com>`。
