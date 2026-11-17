@@ -40,5 +40,13 @@
     "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "author": "yitinguseai <yiting.useai@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yitinguseai/en_travel_table.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yitinguseai/en_travel_table/issues"
   }
 }
